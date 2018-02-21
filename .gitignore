@@ -7,7 +7,7 @@ yarn-error.log*
 
 # Dependency directories
 node_modules/
-src/
+src/static/js
 
 # Optional npm cache directory
 .npm
