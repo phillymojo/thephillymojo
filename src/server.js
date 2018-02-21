@@ -18,7 +18,7 @@ app.use(Express.static(path.join(__dirname, 'static')));
 // universal routing and rendering
 app.get('*', (req, res) => {
   let markup = '';
-  let statue = 200;
+  let status = 200;
   return res.status(status).render('index', { markup });
 });
 

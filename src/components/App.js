@@ -7,17 +7,17 @@ import { NotFoundPage } from './NotFoundPage';
 import athletes from '../data/athletes';
 
 const renderIndex = () => <IndexPage athletes={athletes} />;
-
-const renderAthlete = ({ match, staticContent }) => {
+const renderAthlete = ({ match, staticContext }) => {
   const id = match.params.id;
   const athlete = athletes.find(current => current.id === id);
-  if(!athlete) {
-    return <NotFoundPage staticContent={staticContent} />;
+  if (!athlete) {
+    return <NotFoundPage staticContext={staticContext} />;
   }
-  return <AthletePage athlete={athlete} athletes={athletes} />;
-}
 
-export const App = () => {
+  return <AthletePage athlete={athlete} athletes={athletes} />;
+};
+
+export const App = () => (
   <Layout>
     <Switch>
       <Route exact path="/" render={renderIndex} />
@@ -25,6 +25,6 @@ export const App = () => {
       <Route component={NotFoundPage} />
     </Switch>
   </Layout>
-}
+);
 
 export default App;

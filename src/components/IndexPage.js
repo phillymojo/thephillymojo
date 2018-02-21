@@ -1,7 +1,7 @@
 import React from 'react';
 import AthletePreview from './AthletePreview';
 
-export const IndexPage = ({ athletes }) => {
+export const IndexPage = ({ athletes }) => (
   <div className="home">
     <div className="athletes-selector">
       {
@@ -13,6 +13,6 @@ export const IndexPage = ({ athletes }) => {
       }
     </div>
   </div>
-}
+)
 
 export default IndexPage;
