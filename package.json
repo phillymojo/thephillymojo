@@ -32,5 +32,8 @@
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
     "webpack": "^3.11.0"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.1.2"
   }
 }
