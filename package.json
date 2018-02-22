@@ -4,7 +4,11 @@
   "description": "My personal website",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start:dev": "export NODE_ENV=development && nodemon src/server.js",
+    "start:dev:universal": "export NODE_ENV=development && export UNIVERSAL=true && npm run start:dev",
+    "build:dev": "webpack -d",
+    "build:dev:watch": "webpack -d --watch"
   },
   "repository": {
     "type": "git",
@@ -30,11 +34,13 @@
     "express": "^4.16.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-router-dom": "^4.2.2",
-    "webpack": "^3.11.0"
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "babel-loader": "^7.1.2",
-    "http-server": "^0.11.1"
+    "babel-register": "^6.26.0",
+    "nodemon": "^1.15.1",
+    "webpack": "^3.11.0",
+    "webpack-node-externals": "^1.6.0"
   }
 }

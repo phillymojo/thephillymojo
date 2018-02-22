@@ -75,7 +75,12 @@ footer p {
   max-width: 200px;
   padding: 0;
   position: relative;
+  transition: all .2s ease-in-out;
   width: 100%;
+}
+
+.home .athletes-selector .athlete-preview:hover {
+  transform: scale(1.1);
 }
 
 .home .athletes-selector .athlete-preview img {
@@ -110,7 +115,7 @@ footer p {
   vertical-align: middle;
 }
 
-nav.athletes-menu {
+nav.atheletes-menu {
   margin: 0 auto;
   max-width: 800px;
   padding: 2em;
@@ -118,12 +123,12 @@ nav.athletes-menu {
   width: 100%;
 }
 
-nav.athletes-menu a {
+nav.atheletes-menu a {
   font-size: 1.6em;
   margin: 0 1em 1em 0;
 }
 
-nav.athletes-menu a.active {
+nav.atheletes-menu a.active {
   color: #030303;
   text-decoration: none;
 }

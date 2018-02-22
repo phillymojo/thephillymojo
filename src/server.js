@@ -1,3 +1,5 @@
+/* eslint no-console: "off" */
+
 import path from 'path';
 import { Server } from 'http';
 import Express from 'express';
@@ -28,7 +30,6 @@ app.get('*', (req, res) => {
         <App />
       </Router>,
     );
-
     // context.url will contain the URL to redirect to if a <Redirect> was used
     if (context.url) {
       return res.redirect(302, context.url);
