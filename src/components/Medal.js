@@ -6,15 +6,15 @@ const typeMap = {
   'B': 'Bronze'
 };
 
-export const Medal = () => {
+export const Medal = props => (
 
   <li className="medal">
-    <span className={`symbol symbol-${this.props.type}`} title={typeMap[this.props.type]}>{this.props.type}</span>
-    <span className="year">{this.props.year}</span>
-    <span className="city"> {this.props.city}</span>
-    <span className="event"> ({this.props.event})</span>
-    <span className="category"> {this.props.category}</span>
+    <span className={`symbol symbol-${props.type}`} title={typeMap[props.type]}>{props.type}</span>
+    <span className="year">{props.year}</span>
+    <span className="city"> {props.city}</span>
+    <span className="event"> ({props.event})</span>
+    <span className="category"> {props.category}</span>
   </li>
-}
+)
 
 export default Medal;

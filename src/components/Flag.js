@@ -23,17 +23,11 @@ const data = {
   }
 };
 
-export const Flag = () => {
-
-  const name = data[this.props.code].name;
-  const icon = data[this.props.code].icon;
-  return (
-    <span className="flag">
-      <img className="icon" title={name} src={`/img/${icon}`} />
-      {this.props.showName && <span className="name"> {name}</span>}
-    </span>
-  );
-
-}
+export const Flag = props => (
+  <span className="flag">
+    <img className="icon" title={props.name} src={`/img/${props.icon}`} />
+    {props.showName && <span className="name"> {props.name}</span>}
+  </span>
+);
 
 export default Flag;

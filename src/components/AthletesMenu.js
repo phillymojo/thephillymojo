@@ -1,15 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
-export const AthletesMenu = () => {
+export const AthletesMenu = ({ athletes }) => (
 
   <nav className="athletes-menu">
-    {this.props.athletes.map(menuAthlete => {
-      return <Link key={menuAthlete.id} to={`/athlete/${menuAthlete.id}`} activeClassName="active">
+    {athletes.map(menuAthlete => {
+      return (<Link key={menuAthlete.id} to={`/athlete/${menuAthlete.id}`} activeclassname="active">
         {menuAthlete.name}
-      </Link>;
+    </Link>);
     })}
   </nav>
-}
+)
 
 export default AthletesMenu;

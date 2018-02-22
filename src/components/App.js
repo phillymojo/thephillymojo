@@ -11,6 +11,7 @@ const renderAthlete = ({ match, staticContext }) => {
   const id = match.params.id;
   const athlete = athletes.find(current => current.id === id);
   if (!athlete) {
+    console.log(staticContext);
     return <NotFoundPage staticContext={staticContext} />;
   }
 
