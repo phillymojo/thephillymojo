@@ -4,15 +4,11 @@ import { Link } from 'react-router-dom';
 export const Layout = props => (
   <div className="app-container">
     <header>
-      <Link to="/">
-        <img className="logo" src="/img/logo-judo-heroes.png" />
-      </Link>
+      <h2>The PhillyMojo</h2>
     </header>
     <div className="app-content">{props.children}</div>
     <footer>
-      <p>
-        This is a demo app to showcase universal rendering and routing with <strong>React</strong> and <strong>Express</strong>.
-          </p>
+      <Link to={`/`}>Homepage</Link>
     </footer>
   </div>
 )
