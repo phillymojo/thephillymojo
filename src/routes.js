@@ -1,7 +1,8 @@
 import React from 'react';
-import Morgan from './components/Morgan';
-import Renata from './components/Renata';
 import { Homepage } from './components/Homepage';
+
+import { User } from './components/User';
+import { Info } from './components/Info';
 
 export const routes = [
   {
@@ -10,21 +11,13 @@ export const routes = [
     component: Homepage
   },
   {
-    path: "/morgan",
-    component: Morgan,
+    path: "/:user",
+    component: User,
   },
   {
-    path: "/morgan/work",
-    component: () => <div>Nike</div>
+    path: "/:user/:info",
+    component: Info,
   },
-  {
-    path: "/morgan/school",
-    component: () => <div>Penn State</div>
-  },
-  {
-    path: "/renata",
-    component: Renata
-  }
 ]
 
 export default routes;

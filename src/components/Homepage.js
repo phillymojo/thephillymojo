@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, Link} from 'react-router-dom';
-import { Morgan } from './Morgan';
 
 
 export const Homepage = () => (
@@ -9,6 +8,7 @@ export const Homepage = () => (
     <div>
       <span><Link to={`/morgan`}>Morgan</Link></span>
       <span><Link to={`/renata`}>Renata</Link></span> 
+      <span><Link to={`/tori`}>Tori</Link></span> 
     </div>
   </div>
 )
