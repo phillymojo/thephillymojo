@@ -6,7 +6,9 @@ import { Morgan } from './Morgan';
 export const Homepage = () => (
   <div>
     <div>Homepage</div>
-    <Link to={`/morgan`}>Morgan</Link>
-    <Link to={`/renata`}>Renata</Link>
+    <div>
+      <span><Link to={`/morgan`}>Morgan</Link></span>
+      <span><Link to={`/renata`}>Renata</Link></span> 
+    </div>
   </div>
 )

@@ -16,3 +16,5 @@ src/static/js
 .env
 
 .babel_cache
+
+src/server-*
