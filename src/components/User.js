@@ -10,7 +10,7 @@ export const User = ({ match }) => {
 
   return (
     <div>
-      <div>{ data[user].name }</div>
+      <div><Link to={`/user/${user}`}>{ data[user].name }</Link></div>
       <Link to={`${match.url}/work`}>Work</Link>
       <Link to={`${match.url}/school`}>School</Link>
     </div>

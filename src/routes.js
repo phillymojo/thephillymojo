@@ -1,6 +1,7 @@
 import React from 'react';
 import { Homepage } from './components/Homepage';
 
+import UserList from './components/UserList';
 import { User } from './components/User';
 import { Info } from './components/Info';
 
@@ -11,11 +12,15 @@ export const routes = [
     component: Homepage
   },
   {
-    path: "/:user",
+    path: "/user",
+    component: UserList,
+  },
+  {
+    path: "/user/:user",
     component: User,
   },
   {
-    path: "/:user/:info",
+    path: "/user/:user/:info",
     component: Info,
   },
 ]
