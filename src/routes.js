@@ -4,24 +4,30 @@ import { Homepage } from './components/Homepage';
 import UserList from './components/UserList';
 import { User } from './components/User';
 import { Info } from './components/Info';
+import { fetchChuckNorrisQuote } from './store/actions';
 
 export const routes = [
   {
     path: "/",
     exact: true,
-    component: Homepage
+    component: Homepage,
   },
   {
     path: "/user",
     component: UserList,
-  },
-  {
-    path: "/user/:user",
-    component: User,
-  },
-  {
-    path: "/user/:user/:info",
-    component: Info,
+    routes: [
+      {
+        path: "/user/:user",
+        component: User,
+        loadData: () => fetchChuckNorrisQuote(),
+        routes: [
+          {
+            path: "/user/:user/:info",
+            component: Info,
+          },
+        ]
+      },
+    ]
   },
 ]
 
