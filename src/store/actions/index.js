@@ -21,6 +21,20 @@ export function getInspirationalQuoteSuccess(inspirationalQuoteData) {
   }
 }
 
+export function getNewsSuccess(data) {
+  return {
+    type: 'NEWS_FETCH_SUCCESS',
+    data
+  }
+}
+
+export function getNasaSuccess(data) {
+  return {
+    type: 'NASA_FETCH_SUCCESS',
+    data
+  }
+}
+
 export function fetchChuckNorrisQuote() {
   return (dispatch) => {
     return axios.get('http://api.icndb.com/jokes/random')
@@ -65,5 +79,37 @@ export function getNFLTeamRoster(teamName = 'phi') {
       .then((response) => {
         console.log(response)
       });
+  }
+}
+
+export function getNasa() {
+  return dispatch => {
+    // dispatch(setIsLoading(true))
+    return axios.post('http://localhost:3000/graphql', {
+      query: `{
+        nasa {
+          title
+          explanation
+          url
+          date
+        }
+      }
+      `
+    }).then((response) => {
+      dispatch(getNasaSuccess(response.data));
+      // dispatch(setIsLoading(false));
+    })
+  }
+}
+
+export function getNews() {
+  return dispatch => {
+    // dispatch(setIsLoading(true))
+    return axios.post('http://localhost:3000/graphql', {
+      query: '{ news { author,title,description,url,urlToImage,publishedAt } }'
+    }).then((response) => {
+      dispatch(getNewsSuccess(response.data));
+      // dispatch(setIsLoading(false));
+    })
   }
 }

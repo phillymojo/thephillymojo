@@ -7,6 +7,8 @@ const UserList = ({ route }) => (
     <span><Link to={`/user/morgan`}>Morgan</Link></span>
     <span><Link to={`/user/renata`}>Renata</Link></span> 
     <span><Link to={`/user/tori`}>Tori</Link></span> 
+    <span><Link to={`/user/news`}>News</Link></span> 
+    <span><Link to={`/user/nasa`}>NASA</Link></span> 
     {renderRoutes(route.routes)}
   </div>
 )

@@ -4,7 +4,9 @@ import { Homepage } from './components/Homepage';
 import UserList from './components/UserList';
 import { User } from './components/User';
 import { Info } from './components/Info';
-import { fetchChuckNorrisQuote } from './store/actions';
+import { fetchChuckNorrisQuote, getNews, getNasa } from './store/actions';
+import { NewsConnected } from './components/news';
+import { NasaConnected } from './components/nasa';
 
 export const routes = [
   {
@@ -16,6 +18,16 @@ export const routes = [
     path: "/user",
     component: UserList,
     routes: [
+      {
+        path: "/user/news",
+        component: NewsConnected,
+        loadData: () => getNews(),
+      },
+      {
+        path: "/user/nasa",
+        component: NasaConnected,
+        loadData: () => getNasa(),
+      },
       {
         path: "/user/:user",
         component: User,

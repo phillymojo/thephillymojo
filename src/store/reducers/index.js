@@ -28,8 +28,28 @@ export function inspirationalQuote(state=[], action) {
   }
 }
 
+export function newsItems(state={ data: { news: [] } }, action) {
+  switch(action.type) {
+    case 'NEWS_FETCH_SUCCESS':
+      return action.data;
+    default:
+      return state;
+  }
+}
+
+export function nasa(state={ data: { nasa: {} } }, action) {
+  switch(action.type) {
+    case 'NASA_FETCH_SUCCESS':
+      return action.data;
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   chuckNorrisQuote,
   weather,
-  inspirationalQuote
+  inspirationalQuote,
+  newsItems,
+  nasa
 });

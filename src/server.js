@@ -11,7 +11,7 @@ import { renderRoutes, matchRoutes } from 'react-router-config';
 import { Provider } from 'react-redux';
 import routes from './routes';
 import { Layout } from './components/Layout';
-import { getWeather, getInspirationalQuote } from './store/actions';
+import { getWeather, getInspirationalQuote, getNews } from './store/actions';
 import schema from './graphql/schema';
 import resolvers from './graphql/resolvers';
 
@@ -49,6 +49,7 @@ app.get('*', (req, res) => {
   const preloadedDataActions = [];
   preloadedDataActions.push(getWeather);
   preloadedDataActions.push(getInspirationalQuote);
+  // preloadedDataActions.push(getNews);
 
   preloadedDataActions.map((action) => {
     return promises.push(store.dispatch(action()));
