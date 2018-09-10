@@ -1,5 +1,8 @@
 import path from 'path';
+const webpack = require('webpack');
 // import nodeExternals from 'webpack-node-externals';
+
+
 
 const client = {
   entry: {
@@ -20,6 +23,11 @@ const client = {
       },
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.PORT': process.env.PORT || 3000,
+    }),
+  ],
 };
 
 // const server = {

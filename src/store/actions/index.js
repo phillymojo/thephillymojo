@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const gqlPath = `http://localhost:${process.env.PORT || 3000}/graphql`;
+
 export function quoteFetchDataSuccess(quote) {
   return {
     type: 'QUOTE_FETCH_DATA_SUCCESS',
@@ -46,7 +48,7 @@ export function fetchChuckNorrisQuote() {
 
 export function getWeather() {
   return (dispatch) => {
-    return axios.post('http://localhost:3000/graphql', {
+    return axios.post(gqlPath, {
       query:
         `{
           weather {
@@ -85,7 +87,7 @@ export function getNFLTeamRoster(teamName = 'phi') {
 export function getNasa() {
   return dispatch => {
     // dispatch(setIsLoading(true))
-    return axios.post('http://localhost:3000/graphql', {
+    return axios.post(gqlPath, {
       query: `{
         nasa {
           title
@@ -105,7 +107,7 @@ export function getNasa() {
 export function getNews() {
   return dispatch => {
     // dispatch(setIsLoading(true))
-    return axios.post('http://localhost:3000/graphql', {
+    return axios.post(gqlPath, {
       query: '{ news { author,title,description,url,urlToImage,publishedAt } }'
     }).then((response) => {
       dispatch(getNewsSuccess(response.data));
