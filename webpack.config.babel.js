@@ -24,8 +24,8 @@ const client = {
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.PORT': process.env.PORT || 3000,
+    new webpack.EnvironmentPlugin({
+      PORT: 3000,
     }),
   ],
 };
