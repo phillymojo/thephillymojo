@@ -2,6 +2,13 @@ import axios from 'axios';
 
 const gqlPath = `http://localhost:${process.env.PORT || 3000}/graphql`;
 
+export function setIsLoading(isLoading) {
+  return {
+    type: 'IS_LOADING',
+    isLoading
+  }
+}
+
 export function quoteFetchDataSuccess(quote) {
   return {
     type: 'QUOTE_FETCH_DATA_SUCCESS',
@@ -30,9 +37,16 @@ export function getNewsSuccess(data) {
   }
 }
 
-export function getNasaSuccess(data) {
+export function getMoviesSuccess(data) {
   return {
-    type: 'NASA_FETCH_SUCCESS',
+    type: 'MOVIES_FETCH_SUCCESS',
+    data
+  }
+}
+
+export function getNFLScheduleSuccess(data) {
+  return {
+    type: 'NFLSCHEDULE_FETCH_SUCCESS',
     data
   }
 }
@@ -60,7 +74,6 @@ export function getWeather() {
     }
     )
       .then(((response) => {
-        // console.log(response.data.query.results.channel.item.condition);
         dispatch(getWeatherSuccess(response.data))
       }))
   }
@@ -75,43 +88,79 @@ export function getInspirationalQuote() {
   }
 }
 
-export function getNFLTeamRoster(teamName = 'phi') {
-  return (dispatch) => {
-    return axios.get(`http://api.suredbits.com/nfl/v0/team/${teamName}/roster`)
-      .then((response) => {
-        console.log(response)
-      });
+export function getMovies() {
+  return (dispatch, getState) => {
+    if (getState().movies.length) return false;
+
+    return axios.post(gqlPath, {
+      query: `{
+        movies {
+          page
+          results {
+            vote_count
+            id
+            video
+            vote_average
+            title
+            popularity
+            poster_path
+            original_language
+            original_title
+            backdrop_path
+            adult
+            overview
+            release_date
+            genre_ids
+          }
+        }
+      }`
+    }).then((response) => {
+      dispatch(getMoviesSuccess(response.data));
+    })
   }
 }
 
-export function getNasa() {
-  return dispatch => {
-    // dispatch(setIsLoading(true))
+export function getNFLSchedule() {
+  return (dispatch, getState) => {
+    if (getState().nflschedule.isLoaded) return false;
+
+    dispatch(setIsLoading(true))
     return axios.post(gqlPath, {
       query: `{
-        nasa {
-          title
-          explanation
-          url
-          date
+        fullgameschedule {
+          lastUpdatedOn
+          gameentry {
+            week
+            date
+            time
+            homeTeam {
+              Name
+            }
+            awayTeam {
+              Name
+            }
+            location
+          }
         }
-      }
-      `
+      }`
     }).then((response) => {
-      dispatch(getNasaSuccess(response.data));
-      // dispatch(setIsLoading(false));
+      // console.log(response.data.data.fullgameschedule.gameentry);
+      dispatch(getNFLScheduleSuccess(response.data.data.fullgameschedule.gameentry));
+      dispatch(setIsLoading(false));
     })
   }
 }
 
 export function getNews() {
-  return dispatch => {
-    // dispatch(setIsLoading(true))
+  return (dispatch, getState) => {
+    if (getState().newsItems.length) return false;
+
+    dispatch(setIsLoading(true))
     return axios.post(gqlPath, {
       query: '{ news { author,title,description,url,urlToImage,publishedAt } }'
     }).then((response) => {
       dispatch(getNewsSuccess(response.data));
-      // dispatch(setIsLoading(false));
+      dispatch(setIsLoading(false));
     })
   }
 }

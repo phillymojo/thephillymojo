@@ -1,12 +1,14 @@
 import React from 'react';
 import { Homepage } from './components/Homepage';
 
+import { fetchChuckNorrisQuote, getNews, getMovies, getNFLSchedule } from './store/actions';
+
 import UserList from './components/UserList';
 import { User } from './components/User';
 import { Info } from './components/Info';
-import { fetchChuckNorrisQuote, getNews, getNasa } from './store/actions';
 import { NewsConnected } from './components/news';
-import { NasaConnected } from './components/nasa';
+import { MoviesConnected } from './components/movies';
+import { NFLConnected } from './components/nfl';
 
 export const routes = [
   {
@@ -24,9 +26,14 @@ export const routes = [
         loadData: () => getNews(),
       },
       {
-        path: "/user/nasa",
-        component: NasaConnected,
-        loadData: () => getNasa(),
+        path: "/user/movies",
+        component: MoviesConnected,
+        loadData: () => getMovies(),
+      },
+      {
+        path: "/user/nfl",
+        component: NFLConnected,
+        loadData: () => getNFLSchedule(),
       },
       {
         path: "/user/:user",

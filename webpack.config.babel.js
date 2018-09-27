@@ -1,4 +1,6 @@
 import path from 'path';
+import { defaultPORT } from './src/constants';
+
 const webpack = require('webpack');
 // import nodeExternals from 'webpack-node-externals';
 
@@ -25,7 +27,7 @@ const client = {
   },
   plugins: [
     new webpack.EnvironmentPlugin({
-      PORT: 3000,
+      PORT: defaultPORT, // if PORT is not defined as env variable, use default
     }),
   ],
 };

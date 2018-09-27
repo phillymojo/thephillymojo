@@ -11,9 +11,10 @@ import { renderRoutes, matchRoutes } from 'react-router-config';
 import { Provider } from 'react-redux';
 import routes from './routes';
 import { Layout } from './components/Layout';
-import { getWeather, getInspirationalQuote, getNews } from './store/actions';
+import { getWeather, getInspirationalQuote } from './store/actions';
 import schema from './graphql/schema';
 import resolvers from './graphql/resolvers';
+import { defaultPORT } from './constants';
 
 import configureStore from './store/configureStore';
 
@@ -49,7 +50,6 @@ app.get('*', (req, res) => {
   const preloadedDataActions = [];
   preloadedDataActions.push(getWeather);
   preloadedDataActions.push(getInspirationalQuote);
-  // preloadedDataActions.push(getNews);
 
   preloadedDataActions.map((action) => {
     return promises.push(store.dispatch(action()));
@@ -81,7 +81,7 @@ app.get('*', (req, res) => {
 });
 
 // start the server
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || defaultPORT;
 const env = process.env.NODE_ENV || 'production';
 server.listen(port, (err) => {
   if (err) {

@@ -27,7 +27,7 @@ class News extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    newsItems: state.newsItems.data.news,
+    newsItems: state.newsItems,
     isLoading: state.isLoading
   }
 }
