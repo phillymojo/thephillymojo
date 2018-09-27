@@ -1,11 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
 
-const UserList = () => (
+const UserList = ({ route }) => (
   <div className="userList">
     <span><Link to={`/user/morgan`}>Morgan</Link></span>
     <span><Link to={`/user/renata`}>Renata</Link></span> 
     <span><Link to={`/user/tori`}>Tori</Link></span> 
+    <span><Link to={`/user/news`}>News</Link></span> 
+    <span><Link to={`/user/movies`}>Movies</Link></span> 
+    <span><Link to={`/user/nfl`}>NFL</Link></span> 
+    {renderRoutes(route.routes)}
   </div>
 )
 
