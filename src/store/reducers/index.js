@@ -49,26 +49,16 @@ export function newsItems(state=[], action) {
 export function movies(state=[], action) {
   switch(action.type) {
     case 'MOVIES_FETCH_SUCCESS':
-      return action.data.data.movies.results;
+      return action.data;
     default:
       return state;
   }
 }
 
-export function nflschedule(state={}, action) {
+export function nflschedule(state=[], action) {
   switch(action.type) {
     case 'NFLSCHEDULE_FETCH_SUCCESS':
-      const games = action.data;
-
-      const games_by_week = {};
-
-      games.forEach((game) => {
-        const week = game.week;
-        if (!games_by_week[`week_${week}`]) games_by_week[`week_${week}`] = [];
-        games_by_week[`week_${week}`].push(game);
-      });
-      games_by_week.isLoaded = true;
-      return games_by_week;
+      return action.data;
     default:
       return state;
   }

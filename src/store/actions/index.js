@@ -115,14 +115,14 @@ export function getMovies() {
         }
       }`
     }).then((response) => {
-      dispatch(getMoviesSuccess(response.data));
+      dispatch(getMoviesSuccess(response.data.data.movies.results));
     })
   }
 }
 
 export function getNFLSchedule() {
   return (dispatch, getState) => {
-    if (getState().nflschedule.isLoaded) return false;
+    if (getState().nflschedule.length) return false;
 
     dispatch(setIsLoading(true))
     return axios.post(gqlPath, {
@@ -144,7 +144,6 @@ export function getNFLSchedule() {
         }
       }`
     }).then((response) => {
-      // console.log(response.data.data.fullgameschedule.gameentry);
       dispatch(getNFLScheduleSuccess(response.data.data.fullgameschedule.gameentry));
       dispatch(setIsLoading(false));
     })

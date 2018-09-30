@@ -4,12 +4,12 @@ import { connect } from "react-redux"
 class Movies extends React.Component {
 
   render() {
-    const movieData = this.props.moviesData;
+    const movieList = this.props.movieList;
     return (
       <div>
         <ul>
         {
-          movieData.map((movie, i) => {
+          movieList.map((movie, i) => {
             return (
               <li key={i}>
                 <div>{movie.title}</div>
@@ -26,7 +26,7 @@ class Movies extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    moviesData: state.movies,
+    movieList: state.movies,
     isLoading: state.isLoading
   }
 }

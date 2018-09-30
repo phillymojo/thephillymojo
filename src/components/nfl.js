@@ -3,17 +3,24 @@ import { connect } from "react-redux"
 
 class NFL extends React.Component {
 
-  renderSchedule(schedule, isLoading) {
-    console.log('called render', isLoading);
+  renderSchedule(games, isLoading) {
     if(isLoading) {
       return <div>Loading...</div>
     }
-    if(Object.keys(schedule).length === 0 && schedule.constructor === Object) return [];
+    // if(Object.keys(schedule).length === 0 && schedule.constructor === Object) return [];
     let tables = [];
+
+    const games_by_week = {};
+
+      games.forEach((game) => {
+        const week = game.week;
+        if (!games_by_week[`week_${week}`]) games_by_week[`week_${week}`] = [];
+        games_by_week[`week_${week}`].push(game);
+      });
 
     for (let i = 1; i <= 17; i++) {
       let table =[];
-      const week = schedule[`week_${i}`];
+      const week = games_by_week[`week_${i}`];
 
       week.map((game) => {
         table.push(
