@@ -14,13 +14,19 @@ const schema = `
     text: String,
   }
   type newsItem {
+    source: NewsSource,
     author: String,
     title: String,
     description: String,
     url: String,
     urlToImage: String,
-    publishedAt: String
+    publishedAt: String,
+    content: String,
   },
+  type NewsSource {
+    id: String,
+    name: String,
+  }
   type Movies {
     page: Int,
     total_results: Int,

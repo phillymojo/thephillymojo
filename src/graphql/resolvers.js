@@ -24,16 +24,12 @@ const resolvers = {
   movies: () => {
     const apiKey = '6ca5b8b498352e5a5f9466a710e831e8';
     const urlBase = "https://api.themoviedb.org/3";
-    const primary_release_date = {
-      gte: "2014-09-15",
-      lte: "2014-10-22&",
-    }
     const language = "en-US";
     const sort_by = "popularity.desc";
     const path = "movie/now_playing";
     const region = "US";
 
-    const moviesUrl = `${urlBase}/${path}?api_key=${apiKey}&language=${language}&region=${region}`;
+    const moviesUrl = `${urlBase}/${path}?api_key=${apiKey}&sort_by=${sort_by}&language=${language}&region=${region}`;
     return axios.get(moviesUrl)
       .then((res) => {
         console.log('load data from remote movies');

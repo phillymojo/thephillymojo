@@ -21,21 +21,6 @@ export const routes = [
     component: UserList,
     routes: [
       {
-        path: "/user/news",
-        component: NewsConnected,
-        loadData: () => getNews(),
-      },
-      {
-        path: "/user/movies",
-        component: MoviesConnected,
-        loadData: () => getMovies(),
-      },
-      {
-        path: "/user/nfl",
-        component: NFLConnected,
-        loadData: () => getNFLSchedule(),
-      },
-      {
         path: "/user/:user",
         component: User,
         loadData: () => fetchChuckNorrisQuote(),
@@ -47,6 +32,21 @@ export const routes = [
         ]
       },
     ]
+  },
+  {
+    path: "/news",
+    component: NewsConnected,
+    loadData: () => getNews(),
+  },
+  {
+    path: "/movies",
+    component: MoviesConnected,
+    loadData: () => getMovies(),
+  },
+  {
+    path: "/nfl",
+    component: NFLConnected,
+    loadData: () => getNFLSchedule(),
   },
 ]
 

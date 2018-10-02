@@ -156,7 +156,21 @@ export function getNews() {
 
     dispatch(setIsLoading(true))
     return axios.post(gqlPath, {
-      query: '{ news { author,title,description,url,urlToImage,publishedAt } }'
+      query: `{ 
+        news { 
+          author,
+          title,
+          description,
+          url,
+          urlToImage,
+          publishedAt,
+          content,
+          source {
+            id,
+            name,
+          }
+        }
+      }`
     }).then((response) => {
       dispatch(getNewsSuccess(response.data));
       dispatch(setIsLoading(false));

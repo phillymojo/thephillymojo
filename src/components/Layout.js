@@ -5,7 +5,7 @@ import { Header } from './header';
 export const Layout = props => (
   <div className="app-container">
     <Header />
-    <div className="app-content">{props.children}</div>
+    <div className="app_content">{props.children}</div>
     <footer>
       <Link to={`/`}>Homepage</Link>
     </footer>

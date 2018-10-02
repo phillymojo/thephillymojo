@@ -15,6 +15,9 @@ export const Navbar = (props) => (
         </li>
         <li className="nav-item">
           <Link className="nav-link" to={'/user'}>Users</Link>
+          <Link className="nav-link" to={`/user/news`}>News</Link>
+          <Link className="nav-link" to={`/user/movies`}>Movies</Link>
+          <Link className="nav-link" to={`/user/nfl`}>NFL</Link>
         </li>
       </ul>
     </div>
