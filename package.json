@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "start:prod":"export NODE_ENV=production && yarn build:dev && babel-node src/server.js",
     "start:dev": "export NODE_ENV=development && nodemon src/server.js",
     "start:dev:universal": "export NODE_ENV=development && export UNIVERSAL=true && npm run start:dev",
     "build:dev": "webpack -d",

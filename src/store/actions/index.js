@@ -1,7 +1,12 @@
 import axios from 'axios';
 
-const gqlPath = `http://localhost:${process.env.PORT || 3000}/graphql`;
+let gqlPath;
 
+// if(process.env.NODE_ENV === 'production') {
+//   gqlPath = 'http://localhost/graphql';
+// } else {
+  gqlPath = `http://localhost:${process.env.PORT || 3000}/graphql`;
+// }
 export function setIsLoading(isLoading) {
   return {
     type: 'IS_LOADING',
