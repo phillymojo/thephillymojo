@@ -22,7 +22,7 @@ export function chuckNorrisQuote(state=[], action) {
 export function weather(state=[], action) {
   switch(action.type) {
     case 'WEATHER_FETCH_DATA_SUCCESS':
-      return action.weatherData.data.weather;
+      return action.data;
     default:
       return state;
   }
@@ -40,7 +40,7 @@ export function inspirationalQuote(state=[], action) {
 export function newsItems(state=[], action) {
   switch(action.type) {
     case 'NEWS_FETCH_SUCCESS':
-      return action.data.data.news;
+      return action.data;
     default:
       return state;
   }

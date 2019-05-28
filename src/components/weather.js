@@ -6,12 +6,7 @@ class Weather extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.props.isLoading ?
-          <span>Loading...</span> :
-          <div>{this.props.weather.text}{this.props.weather.temp}</div>
-        }
-      </div>
+      <div className="weather col-sm-2">{this.props.weather.text} - {this.props.weather.temp}&deg;</div>
     )
   }
 }

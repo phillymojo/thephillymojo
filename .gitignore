@@ -18,3 +18,5 @@ src/static/js
 .babel_cache
 
 src/server-*
+
+dist/

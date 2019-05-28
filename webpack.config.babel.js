@@ -4,6 +4,9 @@ import { defaultPORT } from './src/constants';
 const webpack = require('webpack');
 // import nodeExternals from 'webpack-node-externals';
 
+const stringifiedEnvVars = {
+  'process.env.IS_CLIENT': true,
+}
 
 
 const client = {
@@ -11,7 +14,7 @@ const client = {
     js: './src/client.js',
   },
   output: {
-    path: path.join(__dirname, 'src', 'static', 'js'),
+    path: path.join(__dirname, 'dist', 'js'),
     filename: 'bundle.js',
   },
   module: {
@@ -20,7 +23,14 @@ const client = {
         test: path.join(__dirname, 'src'),
         use: {
           loader: 'babel-loader',
-          options: 'cacheDirectory=.babel_cache',
+          // options: {
+          //   "presets": [
+          //     "@babel/env",
+          //     "@babel/react"
+          //   ],
+          //   plugins: ['@babel/syntax-dynamic-import']
+          // }
+          // options: 'cacheDirectory=.babel_cache',
         },
       },
     ],
@@ -29,6 +39,7 @@ const client = {
     new webpack.EnvironmentPlugin({
       PORT: defaultPORT, // if PORT is not defined as env variable, use default
     }),
+    new webpack.DefinePlugin(stringifiedEnvVars),
   ],
 };
 

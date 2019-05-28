@@ -6,15 +6,9 @@ class InspirationalQuote extends React.Component {
 
   render() {
     return (
-      <div>
-        <br />
-        {this.props.isLoading ?
-          <span>Loading...</span> :
-          <div>
-          <div>{this.props.inspirationalQuote.quoteText}</div>
-          <div>{this.props.inspirationalQuote.quoteAuthor}</div>
-          </div>
-        }
+      <div className="col-8">
+        <div>{this.props.inspirationalQuote.quoteText}</div>
+        <div className="author">- {this.props.inspirationalQuote.quoteAuthor}</div>
       </div>
     )
   }
@@ -24,8 +18,8 @@ const mapStateToProps = (state) => {
   return {
     inspirationalQuote: state.inspirationalQuote,
   }
- }
-  
- export const InspirationalQuoteConnected = withRouter(connect(
+}
+
+export const InspirationalQuoteConnected = withRouter(connect(
   mapStateToProps
 )(InspirationalQuote))
