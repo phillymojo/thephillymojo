@@ -48,7 +48,7 @@ app.get('*', (req, res) => {
 
   // ## always make sure this data is pre-loaded before rendering on server
   const preloadedDataActions = [];
-  preloadedDataActions.push(getWeather);
+  // preloadedDataActions.push(getWeather);
   preloadedDataActions.push(getInspirationalQuote);
 
   preloadedDataActions.map((action) => {
