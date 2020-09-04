@@ -48,7 +48,7 @@
   "devDependencies": {
     "babel-loader": "^7.1.2",
     "babel-register": "^6.26.0",
-    "node-sass": "^4.9.3",
+    "node-sass": "^4.13.1",
     "nodemon": "^1.19.1",
     "webpack": "^3.11.0",
     "webpack-node-externals": "^1.6.0"
