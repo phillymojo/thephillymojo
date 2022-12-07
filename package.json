@@ -34,7 +34,7 @@
     "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.1.1",
     "ejs": "^2.5.7",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "express-graphql": "^0.6.12",
     "graphql": "^0.13.2",
     "react": "^16.2.0",
