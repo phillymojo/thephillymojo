@@ -23,12 +23,15 @@ export default function GetMyCourtWidget() {
         fetch('/api/getmycourt/schedule'),
       ]);
 
-      if (!configRes.ok || !scheduleRes.ok) {
-        throw new Error('Failed to fetch data');
-      }
-
       const configData = await configRes.json();
       const scheduleData = await scheduleRes.json();
+
+      if (!configRes.ok) {
+        throw new Error(configData.error || 'Failed to fetch config');
+      }
+      if (!scheduleRes.ok) {
+        throw new Error(scheduleData.error || 'Failed to fetch schedule');
+      }
 
       setConfig(configData);
       setSchedule(scheduleData);

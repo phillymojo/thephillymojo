@@ -48,6 +48,13 @@ export async function PUT(request) {
       ScheduleExpressionTimezone: timezone || currentSchedule.ScheduleExpressionTimezone,
       FlexibleTimeWindow: currentSchedule.FlexibleTimeWindow,
       Target: currentSchedule.Target,
+      // Preserve optional fields that would otherwise be reset
+      GroupName: currentSchedule.GroupName,
+      Description: currentSchedule.Description,
+      StartDate: currentSchedule.StartDate,
+      EndDate: currentSchedule.EndDate,
+      KmsKeyArn: currentSchedule.KmsKeyArn,
+      ActionAfterCompletion: currentSchedule.ActionAfterCompletion,
     });
 
     await schedulerClient.send(updateCommand);
