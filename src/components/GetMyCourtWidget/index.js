@@ -17,36 +17,58 @@ export default function GetMyCourtWidget() {
     setLoading(true);
     setError(null);
 
-    try {
-      const [configRes, scheduleRes] = await Promise.all([
-        fetch('/api/getmycourt/config'),
-        fetch('/api/getmycourt/schedule'),
-      ]);
+    const errors = [];
 
-      const configData = await configRes.json();
-      const scheduleData = await scheduleRes.json();
+    // Fetch config and schedule independently
+    const [configRes, scheduleRes] = await Promise.all([
+      fetch('/api/getmycourt/config').catch((err) => ({ error: err.message })),
+      fetch('/api/getmycourt/schedule').catch((err) => ({ error: err.message })),
+    ]);
 
-      if (!configRes.ok) {
-        throw new Error(configData.error || 'Failed to fetch config');
+    // Handle config response
+    if (configRes.error) {
+      errors.push(`Config: ${configRes.error}`);
+    } else {
+      try {
+        const configData = await configRes.json();
+        if (!configRes.ok) {
+          errors.push(`Config: ${configData.error || 'Failed to fetch config'}`);
+        } else {
+          setConfig(configData);
+          // Don't pre-fill password with masked value - leave empty
+          const formData = { ...(configData.config || {}) };
+          if (formData.PASSWORD === '••••••••') {
+            formData.PASSWORD = '';
+          }
+          setFormConfig(formData);
+        }
+      } catch (err) {
+        errors.push(`Config: ${err.message}`);
       }
-      if (!scheduleRes.ok) {
-        throw new Error(scheduleData.error || 'Failed to fetch schedule');
-      }
-
-      setConfig(configData);
-      setSchedule(scheduleData);
-      // Don't pre-fill password with masked value - leave empty
-      const formData = { ...(configData.config || {}) };
-      if (formData.PASSWORD === '••••••••') {
-        formData.PASSWORD = '';
-      }
-      setFormConfig(formData);
-      setFormSchedule(scheduleData.scheduleExpression || '');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
     }
+
+    // Handle schedule response
+    if (scheduleRes.error) {
+      errors.push(`Schedule: ${scheduleRes.error}`);
+    } else {
+      try {
+        const scheduleData = await scheduleRes.json();
+        if (!scheduleRes.ok) {
+          errors.push(`Schedule: ${scheduleData.error || 'Failed to fetch schedule'}`);
+        } else {
+          setSchedule(scheduleData);
+          setFormSchedule(scheduleData.scheduleExpression || '');
+        }
+      } catch (err) {
+        errors.push(`Schedule: ${err.message}`);
+      }
+    }
+
+    if (errors.length > 0) {
+      setError(errors.join('; '));
+    }
+
+    setLoading(false);
   }, []);
 
   useEffect(() => {
