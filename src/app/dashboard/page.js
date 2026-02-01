@@ -1,5 +1,6 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import Image from 'next/image';
 import GetMyCourtWidget from '@/components/GetMyCourtWidget';
 import SignOutButton from '@/components/SignOutButton';
 
@@ -12,10 +13,12 @@ export default async function Dashboard() {
         <h1 className="text-2xl font-semibold">Dashboard</h1>
         {session?.user && (
           <div className="flex items-center gap-3">
-            <img
+            <Image
               src={session.user.image}
               alt=""
-              className="w-8 h-8 rounded-full"
+              width={32}
+              height={32}
+              className="rounded-full"
             />
             <span className="text-sm text-gray-600 dark:text-gray-400">
               {session.user.email}
