@@ -58,11 +58,13 @@ export async function PUT(request) {
     const currentConfig = await lambdaClient.send(getCommand);
     const currentVars = currentConfig.Environment?.Variables || {};
 
-    // Merge new config with current, skipping masked values
+    // Merge new config with current, skipping masked/empty password values
     const newVars = { ...currentVars };
     for (const [key, value] of Object.entries(config)) {
       // Skip if value is the masked placeholder
       if (value === "••••••••") continue;
+      // Skip empty password (means "keep current")
+      if (key === "PASSWORD" && value === "") continue;
       newVars[key] = value;
     }
 

@@ -32,7 +32,12 @@ export default function GetMyCourtWidget() {
 
       setConfig(configData);
       setSchedule(scheduleData);
-      setFormConfig(configData.config || {});
+      // Don't pre-fill password with masked value - leave empty
+      const formData = { ...(configData.config || {}) };
+      if (formData.PASSWORD === '••••••••') {
+        formData.PASSWORD = '';
+      }
+      setFormConfig(formData);
       setFormSchedule(scheduleData.scheduleExpression || '');
     } catch (err) {
       setError(err.message);
@@ -204,6 +209,7 @@ export default function GetMyCourtWidget() {
             value={formConfig.PASSWORD || ''}
             onChange={(v) => handleConfigChange('PASSWORD', v)}
             type="password"
+            placeholder="Leave blank to keep current"
           />
           <ConfigField
             label="Notification Email"
