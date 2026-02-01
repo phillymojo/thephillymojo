@@ -2,7 +2,11 @@ node_modules
 .git
 .next
 out
-.env*.local
+# 1. Ignore all environment files (including the standard .env)
+.env*
+
+# 2. Explicitly allow the example file to be copied
+!.env.example
 npm-debug.log*
 PLAN.md
 README.md
