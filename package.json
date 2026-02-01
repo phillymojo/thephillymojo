@@ -1,56 +1,22 @@
 {
   "name": "thephillymojo",
-  "version": "1.0.0",
-  "description": "My personal website",
-  "main": "index.js",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "jest",
-    "start:prod":"export NODE_ENV=production && yarn build:dev && babel-node src/server.js",
-    "start:dev": "export NODE_ENV=development && nodemon src/server.js",
-    "start:dev:universal": "export NODE_ENV=development && export UNIVERSAL=true && npm run start:dev",
-    "build:dev": "webpack -d",
-    "build:dev:watch": "webpack -d --watch"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/phillymojo/thephillymojo.git"
-  },
-  "keywords": [
-    "react",
-    "node",
-    "webpack"
-  ],
-  "author": "Morgan Bonar",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/phillymojo/thephillymojo/issues"
-  },
-  "homepage": "https://github.com/phillymojo/thephillymojo#readme",
   "dependencies": {
-    "axios": "^0.18.0",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "bootstrap": "^4.1.1",
-    "ejs": "^2.5.7",
-    "express": "^4.16.2",
-    "express-graphql": "^0.6.12",
-    "graphql": "^0.13.2",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.7",
-    "react-router-config": "^1.0.0-beta.4",
-    "react-router-dom": "^4.2.2",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
-    "babel-loader": "^7.1.2",
-    "babel-register": "^6.26.0",
-    "node-sass": "^4.9.3",
-    "nodemon": "^1.19.1",
-    "webpack": "^3.11.0",
-    "webpack-node-externals": "^1.6.0"
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4"
   }
 }

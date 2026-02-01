@@ -1,3 +1,10 @@
 node_modules
-.gitignore
+.git
+.next
+out
+.env*.local
+npm-debug.log*
+PLAN.md
+README.md
+.dockerignore
 Dockerfile
