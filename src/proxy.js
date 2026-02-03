@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 // Routes that require authentication
 const protectedRoutes = ["/dashboard", "/api/getmycourt"];
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   // Check if this is a protected route
