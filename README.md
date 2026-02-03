@@ -5,8 +5,10 @@ Personal hub and dashboard built with Next.js.
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router, standalone mode)
-- **Styling**: Tailwind CSS
+- **Runtime**: Node.js 20, React 19
+- **Styling**: Tailwind CSS v4, shadcn/ui (Radix primitives)
 - **Authentication**: NextAuth.js with Google OAuth
+- **AWS**: Lambda, EventBridge Scheduler (via @aws-sdk)
 - **Deployment**: AWS App Runner
 - **CI/CD**: GitHub Actions → ECR → App Runner
 
@@ -50,7 +52,14 @@ App Runner auto-deploys when a new image is pushed.
 
 ## Environment Variables
 
-See `.env.example` for required environment variables.
+See `.env.example` for the full list. Key variables:
+
+| Variable | Purpose |
+|----------|---------|
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth (NextAuth) |
+| `NEXTAUTH_URL`, `NEXTAUTH_SECRET` | NextAuth config |
+| `GETMYCOURT_LAMBDA_NAME`, `GETMYCOURT_SCHEDULE_NAME` | GetMyCourt widget (Lambda, EventBridge) |
+| `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` | AWS credentials (local dev; production uses IAM) |
 
 ## Project Structure
 
@@ -65,13 +74,17 @@ src/
 │   └── api/
 │       ├── auth/[...nextauth] # NextAuth handlers
 │       └── getmycourt/        # Lambda/EventBridge APIs
+│           ├── config/        # Lambda env vars (GET, PUT)
+│           └── schedule/      # EventBridge schedule (GET, PUT)
 ├── components/
 │   ├── Header/
 │   ├── Footer/
 │   ├── GetMyCourtWidget/      # Dashboard widget
-│   └── SignOutButton/
+│   ├── SignOutButton/
+│   └── ui/                    # shadcn/ui components (button, card, input)
 ├── lib/
 │   ├── auth.js                # NextAuth config
-│   └── aws.js                 # AWS SDK clients
-└── middleware.js              # Route protection
+│   ├── aws.js                 # AWS SDK clients
+│   └── utils.js               # cn() and other utilities
+└── proxy.js                   # Route protection logic
 ```
