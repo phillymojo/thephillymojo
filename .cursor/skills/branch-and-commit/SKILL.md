@@ -46,7 +46,18 @@ Use the branch name from Step 1.
 - If the user specified files or paths, run `git add <paths>`.
 - Otherwise run `git add .` to stage all changes.
 
-## Step 4: Commit (unless add-only)
+## Step 4: Update README (before commit, unless add-only)
+
+If the user asked for **add only**, skip this step.
+
+Otherwise, before committing:
+
+1. Run `git diff --cached` to see staged changes.
+2. Review the changes. If they affect project structure, dependencies, env vars, docs, API routes, or new features, the README may need updates.
+3. If README needs updates: edit `README.md` to reflect the changes (keep it as the source of truth). Then run `git add README.md` to stage the updates. **After updating, show the user a brief message summarizing what was changed in the README** (e.g. "Updated README: added new component to project structure, updated env vars table").
+4. If no README updates needed: proceed to Step 5.
+
+## Step 5: Commit (unless add-only)
 
 If the user asked for **add only** (don't commit), stop after Step 3. Confirm what you did: "Created branch `<branch-name>` and staged changes. No commit (add-only)."
 
@@ -70,7 +81,8 @@ git commit -m "<message>"
 2. Determine: branch name (or plan to generate), add-only?, commit message (or plan to generate).
 3. git checkout -b <branch-name>
 4. git add . (or user-specified paths)
-5. If add-only: stop. Otherwise: commit with given or generated message.
+5. If add-only: stop. Otherwise: review staged diff, update README if needed, git add README.md.
+6. Commit with given or generated message.
 ```
 
 ## Examples
@@ -83,7 +95,7 @@ git commit -m "<message>"
 **User**: "Branch and commit" (no name, no message)
 - Pre-check: on master.
 - Branch name: generate from staged diff after adding (e.g. `feature/add-widget`).
-- Add only: no. Stage, then generate commit message from diff and commit.
+- Add only: no. Stage, review diff and update README if needed, then generate commit message and commit.
 
 **User**: "New branch fix/typo, commit with message: Fix typo in README"
 - Pre-check: on master.
