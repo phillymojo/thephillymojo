@@ -10,7 +10,6 @@ const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "")
   .filter(Boolean);
 
 if (!NEXTAUTH_SECRET) {
-  // eslint-disable-next-line no-console
   console.error("Missing NEXTAUTH_SECRET env var.");
   process.exit(1);
 }
@@ -156,7 +155,6 @@ server.on("upgrade", async (request, socket, head) => {
       wss.emit("connection", ws, request);
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("WebSocket upgrade error:", error);
     socket.write("HTTP/1.1 500 Internal Server Error\r\n\r\n");
     socket.destroy();
@@ -296,6 +294,5 @@ const pingInterval = setInterval(() => {
 wss.on("close", () => clearInterval(pingInterval));
 
 server.listen(PORT, () => {
-  // eslint-disable-next-line no-console
   console.log(`WS server listening on :${PORT}`);
 });

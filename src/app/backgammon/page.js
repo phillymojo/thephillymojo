@@ -33,27 +33,32 @@ function getDefaultWsUrl() {
   return `wss://ws.${rootDomain}`;
 }
 
+function getIsLocalEnv() {
+  if (typeof window === "undefined") return false;
+  const hostname = window.location.hostname;
+  return (
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname.startsWith("localhost.")
+  );
+}
+
 export default function BackgammonTestPage() {
   const { status: authStatus } = useSession();
-  const [wsUrl, setWsUrl] = useState("");
+  const [wsUrl, setWsUrl] = useState(() =>
+    typeof window === "undefined" ? "" : getDefaultWsUrl()
+  );
   const [gameId, setGameId] = useState("local-test");
   const [status, setStatus] = useState("disconnected");
   const [messages, setMessages] = useState([]);
-  const [isLocalEnv, setIsLocalEnv] = useState(false);
   const socketRef = useRef(null);
 
+  const isLocalEnv = getIsLocalEnv();
   const isAuthed = authStatus === "authenticated";
   const canConnect = status === "disconnected" && isAuthed;
   const canDisconnect = status === "connected";
 
   useEffect(() => {
-    const hostname = window.location.hostname;
-    const local =
-      hostname === "localhost" ||
-      hostname === "127.0.0.1" ||
-      hostname.startsWith("localhost.");
-    setIsLocalEnv(local);
-    setWsUrl((prev) => prev || getDefaultWsUrl());
     return () => {
       if (socketRef.current) {
         socketRef.current.close();
