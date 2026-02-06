@@ -9,23 +9,21 @@
                                       │
                                       ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                    www.thephillymojo.com (Route 53)                         │
+│                         Route 53 (thephillymojo.com)                         │
 └─────────────────────────────────────────────────────────────────────────────┘
-                                      │
-                                      ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         AWS App Runner                                       │
-│  ┌───────────────────────────────────────────────────────────────────────┐  │
-│  │                     Next.js Application                                │  │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────────┐   │  │
-│  │  │   Pages     │  │  API Routes │  │      Middleware             │   │  │
-│  │  │  /, /login  │  │ /api/auth/* │  │  (route protection)        │   │  │
-│  │  │  /dashboard │  │ /api/getmy* │  │                             │   │  │
-│  │  └─────────────┘  └─────────────┘  └─────────────────────────────┘   │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-│                              │                                               │
-│                    IAM Role: thephillymojo-apprunner-role                   │
-└─────────────────────────────────────────────────────────────────────────────┘
+                    │                                      │
+        www.thephillymojo.com                  ws.thephillymojo.com
+                    │                                      │
+                    ▼                                      ▼
+┌─────────────────────────────────────┐   ┌─────────────────────────────────────┐
+│         AWS App Runner              │   │  ALB → ECS Fargate (thephillymojo-ws)│
+│  ┌───────────────────────────────┐  │   │  WebSocket server, session cookie   │
+│  │ Next.js: /, /login, /dashboard │  │   │  auth for backgammon                 │
+│  │ /snake, /backgammon, /api/*    │  │   └─────────────────────────────────────┘
+│  └───────────────────────────────┘  │
+│  IAM: thephillymojo-apprunner-role  │
+└─────────────────────────────────────┘
+
            │                   │                              │
            ▼                   ▼                              ▼
     ┌────────────┐    ┌────────────────┐            ┌─────────────────┐
@@ -44,6 +42,8 @@
 | `/` | Homepage | No |
 | `/login` | Google OAuth login page | No |
 | `/dashboard` | Dashboard with widgets | Yes |
+| `/snake` | Snake game | No |
+| `/backgammon` | Backgammon WS test (connect requires session) | No (page); WS requires session |
 
 ### API Routes
 
@@ -58,10 +58,12 @@
 | Service | Resource Name | Purpose |
 |---------|--------------|---------|
 | App Runner | thephillymojo | Hosts the Next.js application |
-| ECR | thephillymojo | Docker image repository |
+| ECR | thephillymojo, thephillymojo-ws | Docker image repositories |
+| ECS Fargate | thephillymojo-ws | WebSocket server (backgammon) |
+| ALB | thephillymojo-ws-alb | HTTPS → WS on ws.thephillymojo.com |
 | Lambda | getmycourt-x86 | Court booking bot |
 | EventBridge Scheduler | getmycourt-schedule | Triggers Lambda on schedule |
-| Route 53 | thephillymojo.com | DNS management |
+| Route 53 | thephillymojo.com | DNS (www + ws subdomain) |
 | IAM | thephillymojo-apprunner-role | App Runner permissions |
 
 ## Data Flow
@@ -69,12 +71,20 @@
 ### Authentication Flow
 
 1. User visits `/dashboard`
-2. Middleware checks for session
+2. Proxy checks for session
 3. If no session, redirect to `/login`
 4. User clicks "Sign in with Google"
 5. Google OAuth flow completes
 6. NextAuth creates session
 7. User redirected to `/dashboard`
+
+### Backgammon WebSocket Flow
+
+1. User opens `/backgammon` (must be signed in to connect).
+2. Browser connects to `wss://ws.thephillymojo.com` with session cookie.
+3. WS server validates NextAuth JWT and accepts connection.
+4. Client sends `join` with `gameId`; server assigns role and broadcasts state.
+5. Moves are sent as `move` and broadcast to the room. See [WebSocket Deploy](ws-deploy.md).
 
 ### GetMyCourt Widget Flow
 
