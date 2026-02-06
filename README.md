@@ -21,6 +21,7 @@ Personal hub and dashboard built with Next.js.
 | [Authentication](docs/authentication.md) | Google OAuth and email allowlist |
 | [CI/CD](docs/ci-cd.md) | GitHub Actions pipeline and secrets |
 | [GetMyCourt Widget](docs/getmycourt-widget.md) | Lambda/EventBridge integration |
+| [WebSocket Deploy](docs/ws-deploy.md) | ECS/Fargate setup for backgammon WS service |
 
 ## Development
 
@@ -66,11 +67,13 @@ See `.env.example` for the full list. Key variables:
 ```
 src/
 ├── app/
-│   ├── layout.js              # Root layout
+│   ├── layout.js              # Root layout (SessionProvider)
 │   ├── page.js                # Homepage
 │   ├── globals.css            # Global styles
 │   ├── dashboard/page.js      # Protected dashboard
 │   ├── login/page.js          # Login page
+│   ├── backgammon/page.js     # Backgammon WS test (session required)
+│   ├── snake/page.js          # Snake game
 │   └── api/
 │       ├── auth/[...nextauth] # NextAuth handlers
 │       └── getmycourt/        # Lambda/EventBridge APIs
@@ -79,12 +82,20 @@ src/
 ├── components/
 │   ├── Header/
 │   ├── Footer/
+│   ├── SessionProvider.js     # NextAuth session context
 │   ├── GetMyCourtWidget/      # Dashboard widget
 │   ├── SignOutButton/
 │   └── ui/                    # shadcn/ui components (button, card, input)
 ├── lib/
 │   ├── auth.js                # NextAuth config
 │   ├── aws.js                 # AWS SDK clients
-│   └── utils.js               # cn() and other utilities
-└── proxy.js                   # Route protection logic
+│   ├── utils.js               # cn() and other utilities
+│   └── snake.js               # Snake game logic
+└── proxy.js                   # Request proxy / route protection (Next.js 16)
+
+services/
+└── ws/                        # WebSocket server (backgammon MVP)
+    ├── index.js
+    ├── package.json
+    └── README.md
 ```

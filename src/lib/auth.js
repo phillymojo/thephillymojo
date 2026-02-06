@@ -9,6 +9,24 @@ const ALLOWED_EMAILS = [
 ];
 
 export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
+  cookies: process.env.NEXTAUTH_COOKIE_DOMAIN
+    ? {
+        sessionToken: {
+          name:
+            (process.env.NEXTAUTH_URL || "").startsWith("https://")
+              ? "__Secure-next-auth.session-token"
+              : "next-auth.session-token",
+          options: {
+            domain: process.env.NEXTAUTH_COOKIE_DOMAIN,
+            httpOnly: true,
+            sameSite: "lax",
+            path: "/",
+            secure: (process.env.NEXTAUTH_URL || "").startsWith("https://"),
+          },
+        },
+      }
+    : undefined,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,

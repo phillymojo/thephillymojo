@@ -7,7 +7,7 @@ Authentication is handled by NextAuth.js with Google OAuth provider. Access is r
 ## Flow
 
 ```
-User → /dashboard → Middleware (no session?) → /login → Google OAuth → Callback → Session created → /dashboard
+User → /dashboard → Proxy (no session?) → /login → Google OAuth → Callback → Session created → /dashboard
 ```
 
 ## Configuration Files
@@ -15,7 +15,7 @@ User → /dashboard → Middleware (no session?) → /login → Google OAuth →
 | File | Purpose |
 |------|---------|
 | `src/lib/auth.js` | NextAuth configuration, Google provider, email allowlist |
-| `src/middleware.js` | Route protection for /dashboard and /api/getmycourt |
+| `src/proxy.js` | Request proxy: route protection for /dashboard and /api/getmycourt (Next.js 16) |
 | `src/app/api/auth/[...nextauth]/route.js` | NextAuth API handlers |
 | `src/app/login/page.js` | Login page with Google sign-in button |
 
@@ -83,6 +83,16 @@ NEXTAUTH_SECRET=<generate-new-for-production>
 GOOGLE_CLIENT_ID=<same-as-local>
 GOOGLE_CLIENT_SECRET=<same-as-local>
 ```
+
+### Production with WebSocket (cookie domain)
+
+When using the backgammon WebSocket at `ws.thephillymojo.com`, the browser must send the session cookie to that subdomain. Set:
+
+```
+NEXTAUTH_COOKIE_DOMAIN=.thephillymojo.com
+```
+
+This is configured in `src/lib/auth.js` via the `cookies.sessionToken.options.domain` override when `NEXTAUTH_COOKIE_DOMAIN` is set. See [WebSocket Deploy](ws-deploy.md#production-auth-note-important).
 
 ## Protected Routes
 
