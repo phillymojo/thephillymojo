@@ -10,9 +10,10 @@ export async function proxy(request) {
   const hostname = hostHeader.split(":")[0].toLowerCase();
 
   if (hostname === "thephillymojo.com") {
-    const redirectUrl = request.nextUrl.clone();
-    redirectUrl.hostname = "www.thephillymojo.com";
-    redirectUrl.protocol = "https:";
+    const redirectUrl = new URL(
+      `https://www.thephillymojo.com${request.nextUrl.pathname}${request.nextUrl.search}`
+    );
+    redirectUrl.port = ""; // avoid :3000 in Location (production uses default 443)
     return NextResponse.redirect(redirectUrl, 308);
   }
 
