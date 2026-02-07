@@ -6,6 +6,15 @@ const protectedRoutes = ["/dashboard", "/api/getmycourt"];
 
 export async function proxy(request) {
   const { pathname } = request.nextUrl;
+  const hostHeader = request.headers.get("host") || "";
+  const hostname = hostHeader.split(":")[0].toLowerCase();
+
+  if (hostname === "thephillymojo.com") {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.hostname = "www.thephillymojo.com";
+    redirectUrl.protocol = "https:";
+    return NextResponse.redirect(redirectUrl, 308);
+  }
 
   // Check if this is a protected route
   const isProtected = protectedRoutes.some((route) =>
@@ -37,5 +46,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/getmycourt/:path*"],
+  matcher: ["/:path*"],
 };
