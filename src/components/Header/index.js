@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { LayoutDashboard, ChevronDown } from "lucide-react";
@@ -14,7 +15,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Header() {
+  const pathname = usePathname();
   const { data: session, status } = useSession();
+  const loginHref =
+    pathname === "/login"
+      ? "/login"
+      : `/login?callbackUrl=${encodeURIComponent(pathname || "/")}`;
 
   return (
     <header className="border-b border-gray-200 dark:border-gray-800">
@@ -64,7 +70,7 @@ export default function Header() {
             </div>
           ) : (
             <Link
-              href="/login"
+              href={loginHref}
               className="text-sm hover:opacity-80 text-muted-foreground"
             >
               Sign In
