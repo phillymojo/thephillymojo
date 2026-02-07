@@ -72,7 +72,7 @@ To allow `ws.thephillymojo.com` to receive NextAuth session cookies, the cookie 
 be the parent domain:
 
 - Set cookie domain to `.thephillymojo.com`
-- Set `NEXTAUTH_URL=https://thephillymojo.com`
+- Set `NEXTAUTH_URL=https://www.thephillymojo.com`
 
 This ensures the browser sends the session cookie to both the app and the WS subdomain.
 

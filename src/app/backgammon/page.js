@@ -14,33 +14,16 @@ import {
 } from "@/components/ui/card";
 
 function getDefaultWsUrl() {
-  if (typeof window === "undefined") {
-    return "";
-  }
-  if (process.env.NEXT_PUBLIC_WS_URL) {
-    return process.env.NEXT_PUBLIC_WS_URL;
-  }
+  if (typeof window === "undefined") return "";
   const hostname = window.location.hostname;
   if (hostname === "localhost" || hostname === "127.0.0.1") {
     return "ws://localhost:8080";
   }
-  const rootDomain = hostname.startsWith("www.")
-    ? hostname.slice(4)
-    : hostname;
   if (hostname.startsWith("localhost.")) {
     return `ws://${hostname}:8080`;
   }
+  const rootDomain = hostname.startsWith("www.") ? hostname.slice(4) : hostname;
   return `wss://ws.${rootDomain}`;
-}
-
-function getIsLocalEnv() {
-  if (typeof window === "undefined") return false;
-  const hostname = window.location.hostname;
-  return (
-    hostname === "localhost" ||
-    hostname === "127.0.0.1" ||
-    hostname.startsWith("localhost.")
-  );
 }
 
 export default function BackgammonTestPage() {
@@ -53,7 +36,6 @@ export default function BackgammonTestPage() {
   const [messages, setMessages] = useState([]);
   const socketRef = useRef(null);
 
-  const isLocalEnv = getIsLocalEnv();
   const isAuthed = authStatus === "authenticated";
   const canConnect = status === "disconnected" && isAuthed;
   const canDisconnect = status === "connected";
@@ -149,21 +131,6 @@ export default function BackgammonTestPage() {
             <label className="text-sm text-muted-foreground">WebSocket URL</label>
             <Input value={wsUrl} onChange={(event) => setWsUrl(event.target.value)} />
           </div>
-          {isLocalEnv && (
-            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <span>Quick set:</span>
-              <Button size="sm" variant="outline" onClick={() => setWsUrl(getDefaultWsUrl())}>
-                Local WS
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setWsUrl("wss://ws.thephillymojo.com")}
-              >
-                Prod WS
-              </Button>
-            </div>
-          )}
           <div className="grid gap-2">
             <label className="text-sm text-muted-foreground">Game ID</label>
             <Input value={gameId} onChange={(event) => setGameId(event.target.value)} />
