@@ -1,17 +1,25 @@
 ---
 name: branch-and-commit
-description: Creates a new branch from master, stages changes, and optionally commits. Requires current branch to be master; aborts otherwise. Use when the user wants to start a new branch, commit changes to a new branch, add-only (stage without commit), or says "new branch", "branch and commit", "add only", etc.
+description: Creates a new branch from master, stages changes, and optionally commits. Requires current branch to be master and master up to date with origin/master; aborts otherwise. Use when the user wants to start a new branch, commit changes to a new branch, add-only (stage without commit), or says "new branch", "branch and commit", "add only", etc.
 ---
 
 # Branch and Commit
 
 Workflow for creating a new branch from master, staging changes, and optionally committing. Follow the steps in order; abort when conditions are not met.
 
-## Pre-check: Must be on master
+## Pre-check 1: Must be on master
 
 1. Run `git branch --show-current` (or `git rev-parse --abbrev-ref HEAD`).
 2. If the result is **not** `master`, **stop**. Tell the user: "This workflow requires the current branch to be master. You're on `<branch>`. Switch to master first, then run this again."
 3. Do not create a branch, stage, or commit. End the workflow.
+
+## Pre-check 2: Master must be up to date with origin/master
+
+1. Run `git fetch origin`.
+2. Run `git rev-list HEAD..origin/master --count`. If the result is **greater than 0**, local master is behind origin/master.
+3. If behind, **stop**. Tell the user: "master is behind origin/master by N commit(s). Run `git pull` to update, then try again."
+4. Do not create a branch, stage, or commit. End the workflow.
+5. If fetch fails (e.g. offline), abort and tell the user: "Could not fetch origin. Ensure you're online and try again."
 
 ## Parse the user's request
 
@@ -78,26 +86,27 @@ git commit -m "<message>"
 
 ```
 1. Check current branch is master → if not, abort.
-2. Determine: branch name (or plan to generate), add-only?, commit message (or plan to generate).
-3. git checkout -b <branch-name>
-4. git add . (or user-specified paths)
-5. If add-only: stop. Otherwise: review staged diff, update README if needed, git add README.md.
-6. Commit with given or generated message.
+2. Fetch origin; check master is up to date with origin/master → if behind, abort.
+3. Determine: branch name (or plan to generate), add-only?, commit message (or plan to generate).
+4. git checkout -b <branch-name>
+5. git add . (or user-specified paths)
+6. If add-only: stop. Otherwise: review staged diff, update README if needed, git add README.md.
+7. Commit with given or generated message.
 ```
 
 ## Examples
 
 **User**: "New branch for the dashboard, add only"
-- Pre-check: on master.
+- Pre-checks: on master, master up to date with origin/master.
 - Branch name: user said "dashboard" → e.g. `feature/dashboard`.
 - Add only: yes. Create branch, stage all, do not commit.
 
 **User**: "Branch and commit" (no name, no message)
-- Pre-check: on master.
+- Pre-checks: on master, master up to date with origin/master.
 - Branch name: generate from staged diff after adding (e.g. `feature/add-widget`).
 - Add only: no. Stage, review diff and update README if needed, then generate commit message and commit.
 
 **User**: "New branch fix/typo, commit with message: Fix typo in README"
-- Pre-check: on master.
+- Pre-checks: on master, master up to date with origin/master.
 - Branch name: `fix/typo`.
 - Commit message: "Fix typo in README". Create branch, stage, commit with that message.
