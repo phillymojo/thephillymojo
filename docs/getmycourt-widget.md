@@ -77,11 +77,14 @@ Returns Lambda environment variables (PASSWORD masked).
 **Response:**
 ```json
 {
-  "USERNAME": "user@example.com",
-  "PASSWORD": "••••••••",
-  "NOTIFICATION_EMAIL": "alerts@example.com",
-  "NOTIFICATION_PHONE": "+1234567890",
-  "DEBUG": "false"
+  "config": {
+    "USERNAME": "user@example.com",
+    "PASSWORD": "••••••••",
+    "NOTIFICATION_EMAIL": "alerts@example.com",
+    "NOTIFICATION_PHONE": "+1234567890",
+    "DEBUG": "false"
+  },
+  "lastModified": "2024-01-15T12:00:00.000Z"
 }
 ```
 
@@ -92,13 +95,15 @@ Updates Lambda environment variables.
 **Request:**
 ```json
 {
-  "USERNAME": "user@example.com",
-  "PASSWORD": "",
-  "NOTIFICATION_EMAIL": "alerts@example.com"
+  "config": {
+    "USERNAME": "user@example.com",
+    "PASSWORD": "",
+    "NOTIFICATION_EMAIL": "alerts@example.com"
+  }
 }
 ```
 
-Empty PASSWORD = keep current value.
+Empty PASSWORD = keep current value. Omitted keys are left unchanged.
 
 ### GET /api/getmycourt/schedule
 
@@ -107,8 +112,10 @@ Returns EventBridge schedule details.
 **Response:**
 ```json
 {
+  "name": "getmycourt-schedule",
   "scheduleExpression": "cron(0 14 * * ? *)",
   "state": "ENABLED",
+  "description": "...",
   "timezone": "America/New_York"
 }
 ```
