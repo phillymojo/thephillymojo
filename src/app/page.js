@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,30 +18,6 @@ export default function Home() {
       </p>
 
       <section className="space-y-10">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-semibold text-foreground">Backgammon</h2>
-            <p className="text-sm text-muted-foreground">
-              Multiplayer backgammon over WebSocket (sign in required).
-            </p>
-          </div>
-          <Button asChild>
-            <Link href="/backgammon">Backgammon WS Test</Link>
-          </Button>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-semibold text-foreground">Snake</h2>
-            <p className="text-sm text-muted-foreground">
-              Classic grid-based Snake mini-game.
-            </p>
-          </div>
-          <Button asChild>
-            <Link href="/snake">Play Snake</Link>
-          </Button>
-        </div>
-
         <h2 className="text-xl font-semibold text-foreground">
           Component library (shadcn/ui)
         </h2>

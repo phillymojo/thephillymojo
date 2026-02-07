@@ -85,7 +85,7 @@ src/
 │   ├── SessionProvider.js     # NextAuth session context
 │   ├── GetMyCourtWidget/      # Dashboard widget
 │   ├── SignOutButton/
-│   └── ui/                    # shadcn/ui components (button, card, input)
+│   └── ui/                    # shadcn/ui components (button, card, dropdown-menu, input)
 ├── lib/
 │   ├── auth.js                # NextAuth config
 │   ├── aws.js                 # AWS SDK clients

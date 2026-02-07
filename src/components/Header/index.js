@@ -3,7 +3,15 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { LayoutDashboard, ChevronDown } from "lucide-react";
 import SignOutButton from "@/components/SignOutButton";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const { data: session, status } = useSession();
@@ -15,9 +23,29 @@ export default function Header() {
           thephillymojo
         </Link>
         <nav className="flex items-center gap-6">
-          <Link href="/dashboard" className="hover:opacity-80">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2 hover:opacity-80"
+          >
+            <LayoutDashboard className="size-4" />
             Dashboard
           </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="gap-1">
+                Games
+                <ChevronDown className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem asChild>
+                <Link href="/backgammon">Backgammon</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/snake">Snake</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {status === "loading" ? (
             <span className="text-sm text-muted-foreground">...</span>
           ) : session?.user ? (
