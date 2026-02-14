@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -30,7 +30,7 @@ function getDefaultWsUrl() {
   return `wss://ws.${rootDomain}`;
 }
 
-export default function BackgammonTestPage() {
+function BackgammonPageContent() {
   const searchParams = useSearchParams();
   const { status: authStatus } = useSession();
   const [wsUrl, setWsUrl] = useState(() =>
@@ -300,5 +300,17 @@ export default function BackgammonTestPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function BackgammonTestPage() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <p className="text-muted-foreground">Loading…</p>
+      </div>
+    }>
+      <BackgammonPageContent />
+    </Suspense>
   );
 }
