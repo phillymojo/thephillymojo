@@ -2,9 +2,13 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { trackEvent } from "@/lib/analytics";
+import BackgammonBoard from "@/components/BackgammonBoard";
+import { createInitialBoardState, normalizeBoardState, applyMove } from "@/lib/backgammon";
 import {
   Card,
   CardContent,
@@ -27,12 +31,16 @@ function getDefaultWsUrl() {
 }
 
 export default function BackgammonTestPage() {
+  const searchParams = useSearchParams();
   const { status: authStatus } = useSession();
   const [wsUrl, setWsUrl] = useState(() =>
     typeof window === "undefined" ? "" : getDefaultWsUrl()
   );
   const [gameId, setGameId] = useState("local-test");
+  const [copiedInvite, setCopiedInvite] = useState(false);
+  const [isInviteSession, setIsInviteSession] = useState(false);
   const [status, setStatus] = useState("disconnected");
+  const [boardState, setBoardState] = useState(() => createInitialBoardState());
   const [messages, setMessages] = useState([]);
   const socketRef = useRef(null);
 
@@ -47,6 +55,21 @@ export default function BackgammonTestPage() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const inviteGameId = searchParams.get("gameId");
+    const inviteWsUrl = searchParams.get("ws");
+
+    if (inviteGameId) {
+      setGameId(inviteGameId);
+    }
+    if (inviteWsUrl) {
+      setWsUrl(inviteWsUrl);
+    }
+    if (inviteGameId || inviteWsUrl) {
+      setIsInviteSession(true);
+    }
+  }, [searchParams]);
 
   function logMessage(source, payload) {
     setMessages((prev) => [
@@ -82,6 +105,16 @@ export default function BackgammonTestPage() {
       } catch (error) {
         parsed = { raw: event.data };
       }
+
+      const candidateBoard =
+        parsed?.payload?.game?.state?.board ?? parsed?.payload?.game?.state ?? null;
+      if (candidateBoard) {
+        const normalizedBoard = normalizeBoardState(candidateBoard);
+        if (normalizedBoard) {
+          setBoardState(normalizedBoard);
+        }
+      }
+
       logMessage("server", parsed);
     };
   }
@@ -98,6 +131,39 @@ export default function BackgammonTestPage() {
     const message = { type, payload };
     socketRef.current.send(JSON.stringify(message));
     logMessage("client", message);
+  }
+
+  const inviteUrl = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    const params = new URLSearchParams();
+    if (gameId) params.set("gameId", gameId);
+    if (wsUrl) params.set("ws", wsUrl);
+    const query = params.toString();
+    return `${window.location.origin}/backgammon${query ? `?${query}` : ""}`;
+  }, [gameId, wsUrl]);
+
+  async function handleCopyInviteLink() {
+    if (!inviteUrl) return;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(inviteUrl);
+      } else {
+        throw new Error("Clipboard API unavailable");
+      }
+      setCopiedInvite(true);
+      trackEvent("invite_link_copied", { gameId });
+      window.setTimeout(() => setCopiedInvite(false), 2000);
+    } catch {
+      // No-op: if clipboard fails, user can still copy from the readonly field.
+    }
+  }
+
+  function handleJoinGame() {
+    sendMessage("join", { gameId });
+    if (isInviteSession) {
+      trackEvent("invite_accepted", { gameId });
+      setIsInviteSession(false);
+    }
   }
 
   const messageList = useMemo(
@@ -135,6 +201,23 @@ export default function BackgammonTestPage() {
             <label className="text-sm text-muted-foreground">Game ID</label>
             <Input value={gameId} onChange={(event) => setGameId(event.target.value)} />
           </div>
+          <div className="grid gap-2">
+            <label className="text-sm text-muted-foreground">Invite Link</label>
+            <div className="flex flex-wrap gap-2">
+              <Input readOnly value={inviteUrl} />
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={handleCopyInviteLink}
+                disabled={!gameId}
+              >
+                Copy Invite Link
+              </Button>
+            </div>
+            {copiedInvite && (
+              <p className="text-sm text-muted-foreground">Invite link copied.</p>
+            )}
+          </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={connect} disabled={!canConnect}>
               Connect
@@ -143,14 +226,16 @@ export default function BackgammonTestPage() {
               Disconnect
             </Button>
             <Button
-              onClick={() => sendMessage("join", { gameId })}
+              onClick={handleJoinGame}
               disabled={!canDisconnect}
               variant="outline"
             >
               Join Game
             </Button>
             <Button
-              onClick={() => sendMessage("move", { state: { note: "test" } })}
+              onClick={() =>
+                sendMessage("move", { state: { board: boardState, note: "test" } })
+              }
               disabled={!canDisconnect}
               variant="outline"
             >
@@ -175,6 +260,24 @@ export default function BackgammonTestPage() {
               WS: <span className="text-foreground font-medium">{status}</span>
             </span>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Board</CardTitle>
+          <CardDescription>
+            Live board view. Uses initial setup until a valid board state is received.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <BackgammonBoard
+            boardState={boardState}
+            onMove={(fromIndex, toIndex) => {
+              const next = applyMove(boardState, fromIndex, toIndex);
+              if (next) setBoardState(next);
+            }}
+          />
         </CardContent>
       </Card>
 
