@@ -1,0 +1,10 @@
+---
+description: Never commit directly to master; always use a branch
+alwaysApply: true
+---
+
+# Never Commit to Master
+
+- **Do not commit to the `master` branch.** Always work on a feature branch.
+- Before staging or committing, check the current branch. If it is `master`, create and switch to a new branch first (e.g. `git checkout -b feature/your-feature`), then stage and commit.
+- If the user asks to commit and you are on `master`, create a new branch from `master`, switch to it, then stage and commit there. Tell the user which branch was used.

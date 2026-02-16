@@ -60,6 +60,7 @@ See `.env.example` for the full list. Key variables:
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth (NextAuth) |
 | `NEXTAUTH_URL`, `NEXTAUTH_SECRET` | NextAuth config |
 | `GETMYCOURT_LAMBDA_NAME`, `GETMYCOURT_SCHEDULE_NAME` | GetMyCourt widget (Lambda, EventBridge) |
+| `GETMYTEETIME_LAMBDA_NAME`, `GETMYTEETIME_SCHEDULE_NAME`, `GETMYTEETIME_SCHEDULE_GROUP` | GetMyTeeTime widget (Lambda, EventBridge) |
 | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` | AWS credentials (local dev; production uses IAM) |
 
 ## Project Structure
@@ -76,14 +77,20 @@ src/
 │   ├── snake/page.js          # Snake game
 │   └── api/
 │       ├── auth/[...nextauth] # NextAuth handlers
-│       └── getmycourt/        # Lambda/EventBridge APIs
-│           ├── config/        # Lambda env vars (GET, PUT)
-│           └── schedule/      # EventBridge schedule (GET, PUT)
+│       ├── events/            # Analytics event logging (POST)
+│       ├── getmycourt/        # Lambda/EventBridge APIs
+│       │   ├── config/        # Lambda env vars (GET, PUT)
+│       │   └── schedule/      # EventBridge schedule (GET, PUT)
+│       └── getmyteetime/      # GetMyTeeTime Lambda/EventBridge APIs
+│           ├── config/       # Lambda env vars (GET, PUT)
+│           ├── schedule/     # EventBridge schedule (GET, PUT)
+│           └── test-run/     # Test Lambda invocation (POST)
 ├── components/
 │   ├── Header/
 │   ├── Footer/
 │   ├── SessionProvider.js     # NextAuth session context
 │   ├── GetMyCourtWidget/      # Dashboard widget
+│   ├── GetMyTeeTimeWidget/    # Dashboard widget (GetMyTeeTime bot)
 │   ├── SignOutButton/
 │   └── ui/                    # shadcn/ui components (button, card, dropdown-menu, input)
 ├── lib/
