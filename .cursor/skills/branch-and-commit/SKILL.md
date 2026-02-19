@@ -1,23 +1,23 @@
 ---
 name: branch-and-commit
-description: Creates a new branch from master, stages changes, and optionally commits. Requires current branch to be master and master up to date with origin/master; aborts otherwise. Use when the user wants to start a new branch, commit changes to a new branch, add-only (stage without commit), or says "new branch", "branch and commit", "add only", etc.
+description: Creates a new branch from main, stages changes, and optionally commits. Requires current branch to be main and main up to date with origin/main; aborts otherwise. Use when the user wants to start a new branch, commit changes to a new branch, add-only (stage without commit), or says "new branch", "branch and commit", "add only", etc.
 ---
 
 # Branch and Commit
 
-Workflow for creating a new branch from master, staging changes, and optionally committing. Follow the steps in order; abort when conditions are not met.
+Workflow for creating a new branch from main, staging changes, and optionally committing. Follow the steps in order; abort when conditions are not met.
 
-## Pre-check 1: Must be on master
+## Pre-check 1: Must be on main
 
 1. Run `git branch --show-current` (or `git rev-parse --abbrev-ref HEAD`).
-2. If the result is **not** `master`, **stop**. Tell the user: "This workflow requires the current branch to be master. You're on `<branch>`. Switch to master first, then run this again."
+2. If the result is **not** `main`, **stop**. Tell the user: "This workflow requires the current branch to be main. You're on `<branch>`. Switch to main first, then run this again."
 3. Do not create a branch, stage, or commit. End the workflow.
 
-## Pre-check 2: Master must be up to date with origin/master
+## Pre-check 2: Main must be up to date with origin/main
 
 1. Run `git fetch origin`.
-2. Run `git rev-list HEAD..origin/master --count`. If the result is **greater than 0**, local master is behind origin/master.
-3. If behind, **stop**. Tell the user: "master is behind origin/master by N commit(s). Run `git pull` to update, then try again."
+2. Run `git rev-list HEAD..origin/main --count`. If the result is **greater than 0**, local main is behind origin/main.
+3. If behind, **stop**. Tell the user: "main is behind origin/main by N commit(s). Run `git pull` to update, then try again."
 4. Do not create a branch, stage, or commit. End the workflow.
 5. If fetch fails (e.g. offline), abort and tell the user: "Could not fetch origin. Ensure you're online and try again."
 
@@ -85,8 +85,8 @@ git commit -m "<message>"
 ## Workflow summary
 
 ```
-1. Check current branch is master → if not, abort.
-2. Fetch origin; check master is up to date with origin/master → if behind, abort.
+1. Check current branch is main → if not, abort.
+2. Fetch origin; check main is up to date with origin/main → if behind, abort.
 3. Determine: branch name (or plan to generate), add-only?, commit message (or plan to generate).
 4. git checkout -b <branch-name>
 5. git add . (or user-specified paths)
@@ -97,16 +97,16 @@ git commit -m "<message>"
 ## Examples
 
 **User**: "New branch for the dashboard, add only"
-- Pre-checks: on master, master up to date with origin/master.
+- Pre-checks: on main, main up to date with origin/main.
 - Branch name: user said "dashboard" → e.g. `feature/dashboard`.
 - Add only: yes. Create branch, stage all, do not commit.
 
 **User**: "Branch and commit" (no name, no message)
-- Pre-checks: on master, master up to date with origin/master.
+- Pre-checks: on main, main up to date with origin/main.
 - Branch name: generate from staged diff after adding (e.g. `feature/add-widget`).
 - Add only: no. Stage, review diff and update README if needed, then generate commit message and commit.
 
 **User**: "New branch fix/typo, commit with message: Fix typo in README"
-- Pre-checks: on master, master up to date with origin/master.
+- Pre-checks: on main, main up to date with origin/main.
 - Branch name: `fix/typo`.
 - Commit message: "Fix typo in README". Create branch, stage, commit with that message.

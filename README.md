@@ -77,7 +77,9 @@ src/
 │   ├── snake/page.js          # Snake game
 │   └── api/
 │       ├── auth/[...nextauth] # NextAuth handlers
+│       ├── chuck/             # Chuck Norris jokes (GET)
 │       ├── events/            # Analytics event logging (POST)
+│       ├── fact/              # Random facts (GET)
 │       ├── getmycourt/        # Lambda/EventBridge APIs
 │       │   ├── config/        # Lambda env vars (GET, PUT)
 │       │   └── schedule/      # EventBridge schedule (GET, PUT)
@@ -88,6 +90,7 @@ src/
 ├── components/
 │   ├── Header/
 │   ├── Footer/
+│   ├── HomeFunCards.js        # Chuck/fact cards on homepage
 │   ├── SessionProvider.js     # NextAuth session context
 │   ├── DashboardBotSections.js # Collapsible accordion for bot widgets
 │   ├── GetMyCourtWidget/      # Dashboard widget
@@ -97,6 +100,7 @@ src/
 ├── lib/
 │   ├── auth.js                # NextAuth config
 │   ├── aws.js                 # AWS SDK clients
+│   ├── funContent.js          # Fallback data for chuck/fact APIs
 │   ├── utils.js               # cn() and other utilities
 │   └── snake.js               # Snake game logic
 └── proxy.js                   # Request proxy / route protection (Next.js 16)
