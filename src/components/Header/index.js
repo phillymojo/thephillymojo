@@ -17,29 +17,31 @@ import {
 export default function Header() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const safePathname = pathname || "/";
   const loginHref =
-    pathname === "/login"
+    safePathname === "/login"
       ? "/login"
-      : `/login?callbackUrl=${encodeURIComponent(pathname || "/")}`;
+      : `/login?callbackUrl=${encodeURIComponent(safePathname)}`;
 
   return (
     <header className="border-b border-gray-200 dark:border-gray-800">
-      <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
         <Link href="/" className="text-lg font-semibold hover:opacity-80">
           thephillymojo
         </Link>
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/dashboard"
-            className="flex items-center gap-2 hover:opacity-80"
+            className="inline-flex items-center gap-2 rounded-lg px-2 py-1 text-sm hover:bg-slate-100 hover:opacity-90 dark:hover:bg-slate-800"
           >
             <LayoutDashboard className="size-4" />
-            Dashboard
+            <span className="hidden sm:inline">Dashboard</span>
           </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="gap-1">
-                Games
+                <span className="hidden sm:inline">Games</span>
+                <span className="sm:hidden">Play</span>
                 <ChevronDown className="size-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -56,14 +58,18 @@ export default function Header() {
             <span className="text-sm text-muted-foreground">...</span>
           ) : session?.user ? (
             <div className="flex items-center gap-3">
-              <Image
-                src={session.user.image}
-                alt=""
-                width={28}
-                height={28}
-                className="rounded-full"
-              />
-              <span className="text-sm text-muted-foreground">
+              {typeof session.user.image === "string" && session.user.image ? (
+                <Image
+                  src={session.user.image}
+                  alt=""
+                  width={28}
+                  height={28}
+                  className="rounded-full"
+                />
+              ) : (
+                <div className="size-7 rounded-full bg-slate-300 dark:bg-slate-600" />
+              )}
+              <span className="hidden text-sm text-muted-foreground lg:inline">
                 {session.user.email}
               </span>
               <SignOutButton />
