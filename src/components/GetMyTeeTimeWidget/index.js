@@ -52,6 +52,10 @@ function normalizeConfigForForm(config = {}) {
   return next;
 }
 
+function notifyDashboardMetaUpdated() {
+  window.dispatchEvent(new CustomEvent('dashboard:bot-meta-updated'));
+}
+
 export default function GetMyTeeTimeWidget() {
   const [loading, setLoading] = useState(true);
   const [savingConfig, setSavingConfig] = useState(false);
@@ -147,6 +151,7 @@ export default function GetMyTeeTimeWidget() {
       }
 
       await fetchData();
+      notifyDashboardMetaUpdated();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -174,6 +179,7 @@ export default function GetMyTeeTimeWidget() {
       }
 
       await fetchData();
+      notifyDashboardMetaUpdated();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -198,6 +204,7 @@ export default function GetMyTeeTimeWidget() {
       }
 
       await fetchData();
+      notifyDashboardMetaUpdated();
     } catch (err) {
       setError(err.message);
     } finally {

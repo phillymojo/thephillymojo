@@ -2,6 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
+function notifyDashboardMetaUpdated() {
+  window.dispatchEvent(new CustomEvent('dashboard:bot-meta-updated'));
+}
+
 export default function GetMyCourtWidget() {
   const [config, setConfig] = useState(null);
   const [schedule, setSchedule] = useState(null);
@@ -96,6 +100,7 @@ export default function GetMyCourtWidget() {
       }
 
       await fetchData(); // Refresh data
+      notifyDashboardMetaUpdated();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -120,6 +125,7 @@ export default function GetMyCourtWidget() {
       }
 
       await fetchData(); // Refresh data
+      notifyDashboardMetaUpdated();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -145,6 +151,7 @@ export default function GetMyCourtWidget() {
       }
 
       await fetchData(); // Refresh data
+      notifyDashboardMetaUpdated();
     } catch (err) {
       setError(err.message);
     } finally {

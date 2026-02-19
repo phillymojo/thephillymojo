@@ -89,6 +89,7 @@ src/
 │   ├── Header/
 │   ├── Footer/
 │   ├── SessionProvider.js     # NextAuth session context
+│   ├── DashboardBotSections.js # Collapsible accordion for bot widgets
 │   ├── GetMyCourtWidget/      # Dashboard widget
 │   ├── GetMyTeeTimeWidget/    # Dashboard widget (GetMyTeeTime bot)
 │   ├── SignOutButton/
