@@ -30,6 +30,7 @@ const BOOLEAN_KEYS = new Set([
 ]);
 
 const PASSWORD_KEYS = new Set(['FAIRBANKS_PASSWORD']);
+const COURSE_CODE_OPTIONS = ['-ALL-', 'Lakes', 'Valley', 'Ocean'];
 
 function prettyLabel(key) {
   return key
@@ -37,6 +38,14 @@ function prettyLabel(key) {
     .split('_')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
+}
+
+function normalizeCourseCodeValue(value) {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '-ALL-';
+  const lower = raw.toLowerCase();
+  const match = COURSE_CODE_OPTIONS.find((o) => o.toLowerCase() === lower);
+  return match ?? '-ALL-';
 }
 
 function normalizeConfigForForm(config = {}) {
@@ -47,6 +56,10 @@ function normalizeConfigForForm(config = {}) {
 
   if (next.FAIRBANKS_PASSWORD === '••••••••') {
     next.FAIRBANKS_PASSWORD = '';
+  }
+
+  if (next.FAIRBANKS_COURSE_CODE) {
+    next.FAIRBANKS_COURSE_CODE = normalizeCourseCodeValue(next.FAIRBANKS_COURSE_CODE);
   }
 
   return next;
@@ -333,6 +346,24 @@ export default function GetMyTeeTimeWidget() {
                     >
                       <option value="false">false</option>
                       <option value="true">true</option>
+                    </select>
+                  </Field>
+                );
+              }
+
+              if (key === 'FAIRBANKS_COURSE_CODE') {
+                return (
+                  <Field key={key} label={prettyLabel(key)}>
+                    <select
+                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
+                      value={normalizeCourseCodeValue(value)}
+                      onChange={(e) => onChangeConfig(key, e.target.value)}
+                    >
+                      {COURSE_CODE_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
                     </select>
                   </Field>
                 );
