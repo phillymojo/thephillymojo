@@ -16,6 +16,7 @@ const EDITABLE_KEYS = [
   'FAIRBANKS_TRANSPORT_CODE',
   'FAIRBANKS_GOLFERS',
   'FAIRBANKS_TIME_WINDOW',
+  'FAIRBANKS_NO_LATER_THAN',
   'FAIRBANKS_COURSE_CODE',
   'FAIRBANKS_DISPLAY_OPT',
   'BOOKING_TIMEZONE',
@@ -31,6 +32,20 @@ const BOOLEAN_KEYS = new Set([
 
 const PASSWORD_KEYS = new Set(['FAIRBANKS_PASSWORD']);
 const COURSE_CODE_OPTIONS = ['-ALL-', 'Lakes', 'Valley', 'Ocean'];
+const NO_LATER_THAN_OPTIONS = [
+  '7:00 AM',
+  '7:30 AM',
+  '8:00 AM',
+  '8:30 AM',
+  '9:00 AM',
+  '9:30 AM',
+  '10:00 AM',
+  '10:30 AM',
+  '11:00 AM',
+  '11:30 AM',
+  '12:00 PM',
+];
+const NO_LATER_THAN_OPTION_SET = new Set(NO_LATER_THAN_OPTIONS.map((value) => value.toUpperCase()));
 
 function prettyLabel(key) {
   return key
@@ -48,6 +63,22 @@ function normalizeCourseCodeValue(value) {
   return match ?? '-ALL-';
 }
 
+function normalizeNoLaterThanValue(value) {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+
+  const match = raw.toUpperCase().match(/^(\d{1,2}):([03]0)(?:\s*(AM|PM))?$/);
+  if (!match) return '';
+
+  const hour = Number(match[1]);
+  const minute = match[2];
+  const meridian = match[3] || (hour === 12 ? 'PM' : 'AM');
+  if (hour < 1 || hour > 12) return '';
+
+  const normalized = `${hour}:${minute} ${meridian}`;
+  return NO_LATER_THAN_OPTION_SET.has(normalized.toUpperCase()) ? normalized : '';
+}
+
 function normalizeConfigForForm(config = {}) {
   const next = {};
   for (const key of EDITABLE_KEYS) {
@@ -60,6 +91,9 @@ function normalizeConfigForForm(config = {}) {
 
   if (next.FAIRBANKS_COURSE_CODE) {
     next.FAIRBANKS_COURSE_CODE = normalizeCourseCodeValue(next.FAIRBANKS_COURSE_CODE);
+  }
+  if (next.FAIRBANKS_NO_LATER_THAN) {
+    next.FAIRBANKS_NO_LATER_THAN = normalizeNoLaterThanValue(next.FAIRBANKS_NO_LATER_THAN);
   }
 
   return next;
@@ -360,6 +394,25 @@ export default function GetMyTeeTimeWidget() {
                       onChange={(e) => onChangeConfig(key, e.target.value)}
                     >
                       {COURSE_CODE_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                );
+              }
+
+              if (key === 'FAIRBANKS_NO_LATER_THAN') {
+                return (
+                  <Field key={key} label={prettyLabel(key)}>
+                    <select
+                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
+                      value={normalizeNoLaterThanValue(value)}
+                      onChange={(e) => onChangeConfig(key, e.target.value)}
+                    >
+                      <option value="">Not set</option>
+                      {NO_LATER_THAN_OPTIONS.map((option) => (
                         <option key={option} value={option}>
                           {option}
                         </option>
