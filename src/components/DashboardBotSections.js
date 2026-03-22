@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const BOTS = [
   {
@@ -11,6 +11,13 @@ const BOTS = [
     scheduleEndpoint: '/api/getmyteetime/schedule',
   },
   {
+    key: 'erteetime',
+    title: 'ER TeeTime Bot',
+    description: 'Encinitas Ranch tee time booking — Parameter Store config, scheduler, and ECS manual runs.',
+    configEndpoint: '/api/erteetime/config',
+    scheduleEndpoint: '/api/erteetime/schedule',
+  },
+  {
     key: 'court',
     title: 'GetMyCourt Bot',
     description: 'Court reservation automation config and schedule settings.',
@@ -19,13 +26,13 @@ const BOTS = [
   },
 ];
 
-export default function DashboardBotSections({ teeTimeWidget, courtWidget }) {
+export default function DashboardBotSections({ teeTimeWidget, erTeeTimeWidget, courtWidget }) {
   const [openBot, setOpenBot] = useState(null);
   const [headerMeta, setHeaderMeta] = useState({});
-  const baseId = useId();
 
   const contentByBot = {
     teetime: teeTimeWidget,
+    erteetime: erTeeTimeWidget,
     court: courtWidget,
   };
 
@@ -87,7 +94,7 @@ export default function DashboardBotSections({ teeTimeWidget, courtWidget }) {
     <div className="space-y-4">
       {BOTS.map((bot) => {
         const isOpen = openBot === bot.key;
-        const panelId = `${baseId}-${bot.key}-panel`;
+        const panelId = `bot-${bot.key}-panel`;
         const meta = headerMeta[bot.key];
         const isEnabled = meta?.state === 'ENABLED';
         const statusLabel = meta?.state ? (isEnabled ? 'Enabled' : 'Disabled') : 'Status unavailable';
