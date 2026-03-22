@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { getServerSession } from "next-auth";
 import "./globals.css";
-import Header from "@/components/Header";
+import ClientHeader from "@/components/ClientHeader";
 import Footer from "@/components/Footer";
 import SessionProvider from "@/components/SessionProvider";
 import { authOptions } from "@/lib/auth";
@@ -30,7 +30,7 @@ export default async function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <SessionProvider session={session}>
-          <Header />
+          <ClientHeader />
           <main className="flex-1">{children}</main>
         </SessionProvider>
         <Footer />
